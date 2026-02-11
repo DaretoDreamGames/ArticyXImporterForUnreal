@@ -29,6 +29,8 @@ int32 UArticyImportCommandlet::Main(const FString& Params)
             RegenerateAssets = true;  // Set flag for asset regeneration
         }
     }
+	
+	const bool OriginalGIsRunningUnattendedScript = GIsRunningUnattendedScript;
 
     GIsRunningUnattendedScript = true;
 
@@ -47,7 +49,7 @@ int32 UArticyImportCommandlet::Main(const FString& Params)
         Outcome = FArticyEditorFunctionLibrary::ReimportChanges();  // Default to reimporting changes
     }
 
-    GIsRunningUnattendedScript = false;
+    GIsRunningUnattendedScript = OriginalGIsRunningUnattendedScript;
     
     return Outcome;
 }
