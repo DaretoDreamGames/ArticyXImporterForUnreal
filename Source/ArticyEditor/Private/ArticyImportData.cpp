@@ -853,7 +853,10 @@ bool UArticyImportData::ImportFromJson(const UArticyArchiveReader& Archive, cons
 					PostImport();
 				});
 
-			CodeGenerator::Recompile(this);
+			if (!IsRunningCommandlet())
+			{
+				CodeGenerator::Recompile(this);
+			}
 		}
 	}
 	// if we are importing but no code needed to be generated, generate assets immediately and perform post import
