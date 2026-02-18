@@ -11,6 +11,7 @@
 #include "AssetRegistryModule.h"
 #endif
 #include "Misc/ConfigCacheIni.h"
+#include "Misc/CoreDelegates.h"
 
 UArticyPluginSettings::UArticyPluginSettings()
 {
@@ -23,9 +24,10 @@ UArticyPluginSettings::UArticyPluginSettings()
 
 	bSortChildrenAtGeneration = false;
 	ArticyDirectory.Path = TEXT("/Game");
+
 	// update package load settings after all files have been loaded
-	FAssetRegistryModule& AssetRegistry = FModuleManager::Get().GetModuleChecked<FAssetRegistryModule>("AssetRegistry");
-	AssetRegistry.Get().OnFilesLoaded().AddUObject(this, &UArticyPluginSettings::UpdatePackageSettings);
+	// SEE: https://github.com/ArticySoftware/ArticyXImporterForUnreal/pull/24
+	FCoreDelegates::OnAllModuleLoadingPhasesComplete.AddUObject(this, &UArticyPluginSettings::UpdatePackageSettings);
 }
 
 bool UArticyPluginSettings::DoesPackageSettingExist(FString packageName)
